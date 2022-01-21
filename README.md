@@ -6,7 +6,12 @@ based on PJCHENder's article & published book : 從 Hooks 開始，讓你的網�
 
 ## Note
 
-day5: 可以使用變數`{Container}`或是 React 組件`<Container2 />`呈現 HTML
+如果有跳過的天數代表是比較簡單的部分或是已經比較熟的部分 就不會特別 commit\
+day5 : 可以使用變數`{Container}`或是 React 組件`<Container2 />`呈現 HTML \
+day6 : React 畫面的重新渲染必須符合兩個條件 :
+
+1.  `setCount` 被呼叫到
+2.  `count` 的值確實有改變
 
 ### `npm start`
 
