@@ -1,8 +1,12 @@
 # Weather Card
 
-react practice
+react practice : weather card
+
+based on PJCHENder's article & published book : 從 Hooks 開始，讓你的網頁 React 起來
 
 ## Note
+
+day5: 可以使用變數`{Container}`或是 React 組件`<Container2 />`呈現 HTML
 
 ### `npm start`
 
