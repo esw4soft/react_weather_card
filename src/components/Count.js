@@ -14,20 +14,31 @@ const appstyle = {
 };
 
 function Count() {
-  const [count, setCount] = useState(256);
+  const [count, setCount] = useState(5);
+
   return (
     <div className="App" style={appstyle}>
       <div className="container" style={shadow}>
         {console.log('render', count)}
+
+        {count < 10 && (
+          <div
+            className="chevron chevron-up"
+            onClick={() => {
+              setCount(count + 1);
+              console.log(`current count is ${count + 1}`);
+            }}
+          ></div>
+        )}
+
+        <div className="number">{count}</div>
         <div
-          className="chevron chevron-up"
+          className="chevron chevron-down"
+          style={{ visibility: count <= 0 && 'hidden' }}
           onClick={() => {
-            setCount(count + 1);
-            console.log(`current count is ${count + 1}`);
+            setCount(count - 1);
           }}
         ></div>
-        <div className="number">{count}</div>
-        <div className="chevron chevron-down"></div>
       </div>
     </div>
   );
