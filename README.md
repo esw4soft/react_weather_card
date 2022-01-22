@@ -13,6 +13,8 @@ day6 : React 畫面的重新渲染必須符合兩個條件 :
 1.  `setCount` 被呼叫到
 2.  `count` 的值確實有改變
 
+day7 : 隱藏元素可以在 style 裡面 或是 className 裡面 又或是整個 dom 結構裡面 加入判斷來呈現與否
+
 ### `npm start`
 
 Runs the app in the development mode.\
