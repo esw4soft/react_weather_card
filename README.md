@@ -14,6 +14,18 @@ day6 : React 畫面的重新渲染必須符合兩個條件 :
 2.  `count` 的值確實有改變
 
 day7 : 隱藏元素可以在 style 裡面 或是 className 裡面 又或是整個 dom 結構裡面 加入判斷來呈現與否
+day8 : 因為 for 迴圈沒有回傳直所以無法應用在{}JSX 裡面 但可使用 map 搭配 array.from()或是 array.keys()來進行迴圈操作 :
+
+```jsx
+// [0, 1, 2, ..., 8, 9]
+let counters =
+  [...Array(10).keys()] ||
+  Array.from({ length: 10 }, (_, index) => index);
+
+{
+  counters.map((item) => <Counter />);
+}
+```
 
 ### `npm start`
 
