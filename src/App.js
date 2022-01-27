@@ -1,11 +1,11 @@
 import './App.css';
-import Count from './components/Count';
+import Converter from './components/Converter';
 
 function App() {
   return (
-    <>
-      <Count />
-    </>
+    <div className="App">
+      <Converter />
+    </div>
   );
 }
 
