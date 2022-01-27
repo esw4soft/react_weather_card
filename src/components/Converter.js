@@ -24,6 +24,7 @@ const Converter = () => {
               <div className="converter-title">Set</div>
               <input
                 type="number"
+                onChange={() => console.log('onchange')}
                 className="input-number"
                 min="0"
               />
