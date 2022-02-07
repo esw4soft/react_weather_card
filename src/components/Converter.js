@@ -14,8 +14,9 @@ const UnitCountrol = () => (
   </div>
 );
 
-const CardFooter = () => {
-  let inputValue = 50;
+const CardFooter = (props) => {
+  const { inputValue } = props;
+  // let inputValue = 50;
   let criteria;
 
   if (!inputValue) {
@@ -97,7 +98,7 @@ const Converter = () => {
             </div>
           </div>
         </div>
-        <CardFooter />
+        <CardFooter inputValue={inputValue} />
       </div>
     </>
   );
