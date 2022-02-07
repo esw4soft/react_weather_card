@@ -1,7 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../style/converter.scss';
 
+const UnitCountrol = () => (
+  <div className="unit-control">
+    <div className="unit">Mbps</div>
+
+    <span className="exchange-icon fa-fw fa-stack">
+      <i className="far fa-circle fa-stack-2x"></i>
+      <i className="fas fa-exchange-alt fa-stack-1x"></i>
+    </span>
+
+    <div className="unit">MB/s</div>
+  </div>
+);
+
+const CardFooter = () => {
+  let inputValue = 50;
+  let criteria;
+
+  if (!inputValue) {
+    criteria = {
+      title: '---',
+      backgroundColor: '#d3d8e2',
+    };
+  } else if (inputValue < 15) {
+    criteria = {
+      title: 'SLOW',
+      backgroundColor: '#ee362d',
+    };
+  } else if (inputValue < 40) {
+    criteria = {
+      title: 'GOOD',
+      backgroundColor: '#1b82f1',
+    };
+  } else if (inputValue >= 40) {
+    criteria = {
+      title: 'Fast',
+      backgroundColor: '#13d569',
+    };
+  }
+  return (
+    <div
+      className="card-footer"
+      style={{ backgroundColor: criteria.backgroundColor }}
+    >
+      {criteria.title}
+    </div>
+  );
+};
+
 const Converter = () => {
+  const [inputValue, setInputValue] = useState(0);
+
+  // 事件處理器
+  const handelInputChane = (e) => {
+    const { value } = e.target;
+
+    setInputValue(value);
+  };
+
   return (
     <>
       <div className="container">
@@ -9,22 +66,14 @@ const Converter = () => {
           Network Speed Converter
         </div>
         <div className="card-body">
-          <div className="unit-control">
-            <div className="unit">Mbps</div>
-
-            <span className="exchange-icon fa-fw fa-stack">
-              <i className="far fa-circle fa-stack-2x"></i>
-              <i className="fas fa-exchange-alt fa-stack-1x"></i>
-            </span>
-
-            <div className="unit">MB/s</div>
-          </div>
+          <UnitCountrol />
           <div className="converter">
             <div className="flex-1">
               <div className="converter-title">Set</div>
               <input
                 type="number"
-                onChange={() => console.log('onchange')}
+                onChange={handelInputChane}
+                value={inputValue}
                 className="input-number"
                 min="0"
               />
@@ -42,13 +91,13 @@ const Converter = () => {
               <input
                 type="text"
                 className="input-number text-right"
-                value="125"
+                value={inputValue / 8}
                 disabled
               />
             </div>
           </div>
         </div>
-        <div className="card-footer">FAST</div>
+        <CardFooter />
       </div>
     </>
   );
