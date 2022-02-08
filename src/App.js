@@ -1,10 +1,10 @@
 import './App.css';
-import Converter from './components/Converter';
+import WeatherApp from './components/WeatherApp';
 
 function App() {
   return (
     <div className="App">
-      <Converter />
+      <WeatherApp />
     </div>
   );
 }
