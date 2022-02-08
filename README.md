@@ -43,6 +43,30 @@ let counters =
 1. `Components` React 組件
 2. `Profilers` 效能檢視
 
+##### day14 : Weather Card -- CSS in JS
+
+解決不小心命名了同樣的 class 名稱，導致樣式相互影響或彼此覆蓋，又或者發生某些樣式權重不夠的情況而難以調整 的狀況
+
+安裝 `@emotion/core` `@emotion/styled` `@emotion/react`
+
+```jsx
+// 使用方法
+
+// STEP 1：載入 emotion 的 styled 套件
+import styled from '@emotion/styled';
+
+// STEP 2：定義帶有 styled 的 component
+const Container = styled.div`
+  background-color: #ededed;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// STEP 3：把上面定義好的 styled-component 當成組件使用
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\
