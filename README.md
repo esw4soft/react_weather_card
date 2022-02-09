@@ -67,6 +67,61 @@ const Container = styled.div`
 // STEP 3：把上面定義好的 styled-component 當成組件使用
 ```
 
+##### day15 : emotion 更多用法
+
+```jsx
+// 一. 使用Emotion 調整已存在的Components
+// 把 SVG 當成一個 React 組件加以載入
+import { ReactComponent as CloudyIcon } from '../img/day-cloudy.svg';
+
+// 使用 Emotion 調整 Components 樣式
+// Emotion 不僅可以用來建立組件，還可以將原本就存在的組件添加樣式。
+// 原本是在 styled. 後面加上一個 HTML 標籤，現在則是放入一個 React 組件，然後就可以在裡面撰寫 CSS 樣式。
+const Cloudy = styled(CloudyIcon)`
+  /* 在這裡寫入 CSS 樣式 */
+  flex-basis: 30%;
+`;
+
+// 二. emotion使用props傳入值: 適用在切換暗/亮色主題
+// 透過 props 將資料帶入 Styled Components 內
+`<Location theme="dark">台北市</Location>;`;
+
+// 透過 props 取得傳進來的資料
+// props 會是 {theme: "dark", children: "台北市"}
+// 透過傳進來的資料決定要呈現的樣式
+const Location = styled.div`
+  font-size: 28px;
+  color: ${(props) =>
+    props.theme === 'dark' ? '#dadada' : '#212121'};
+  margin-bottom: 20px;
+`;
+
+// 三. 在 Emotion 中可以把撰寫好的 CSS 樣式當作 JavaScript 函式保存起來，步驟如下：
+// 1.從 @emotion/core 中匯入 Emotion 提供的 css 函式
+// 2.定義帶有 CSS 樣式的函式
+// 3.在 Styled Components 中套用定義好的樣式
+
+// STEP 1：匯入 Emotion 提供的 css 函式
+import { css } from '@emotion/core';
+
+// STEP 2：將一批 CSS 樣式定義成 JavaScript 函式
+const buttonDefault = () => css`
+  display: block;
+  width: 120px;
+  height: 30px;
+  font-size: 14px;
+  background-color: transparent;
+  color: ${props.theme === 'dark' ? '#dadada' : '#212121'};
+`;
+
+// STEP 3 在定義 Styled Components 時載入定義好的 CSS 樣式
+// 和 CSS 一樣，同樣的樣式後面寫的會覆蓋前面寫的
+const rejectButton = styled.button`
+  ${buttonDefault}
+  background-color: red;
+`;
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\
