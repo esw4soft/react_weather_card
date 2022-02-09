@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -98,24 +98,42 @@ const Redo = styled(RedoIcon)`
 `;
 
 const WeatherApp = () => {
+  const [currentWeather, setCurrentWeather] = useState({
+    observationTime: '2019-10-02 22:10:00',
+    locationName: '臺北市',
+    description: '多雲時晴',
+    temperature: 27.5,
+    windSpeed: 0.3,
+    humid: 0.88,
+  });
   return (
     <Container>
       <WeatherCard>
-        <Location>台北市</Location>
-        <Description>多雲時晴</Description>
+        <Location>{currentWeather.locationName}</Location>
+        <Description>
+          {new Intl.DateTimeFormat('zh-TW', {
+            hour: 'numeric',
+            ninute: 'numeric',
+          }).format(
+            new Date(currentWeather.observationTime)
+          )}
+          {''}
+          {currentWeather.description}
+        </Description>
         <CurrentWeather>
           <Temperature>
-            23 <Celsius>°C</Celsius>
+            {Math.round(currentWeather.temperature)}
+            <Celsius>°C</Celsius>
           </Temperature>
           <Cloudy />
         </CurrentWeather>
         <AirFlow>
           <AirFlowIcon />
-          23 m/h
+          {currentWeather.windSpeed} m/h
         </AirFlow>
         <Rain>
           <RainIcon />
-          48%
+          {currentWeather.humid * 100}%
         </Rain>
         <Redo />
       </WeatherCard>
