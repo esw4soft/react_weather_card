@@ -2,6 +2,11 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { ReactComponent as CloudyIcon } from '../img/day-cloudy.svg';
+import { ReactComponent as RainIcon } from '../img/rain.svg';
+import { ReactComponent as AirFlowIcon } from '../img/airFlow.svg';
+import { ReactComponent as RedoIcon } from '../img/refresh.svg';
+
 const Container = styled.div`
   background-color: #ededed;
   height: 100%;
@@ -57,6 +62,12 @@ const AirFlow = styled.div`
   font-weight: 300;
   color: #828282;
   margin-bottom: 20px;
+
+  svg {
+    width: 25px;
+    height: auto;
+    margin-right: 30px;
+  }
 `;
 
 const Rain = styled.div`
@@ -65,6 +76,25 @@ const Rain = styled.div`
   font-size: 16x;
   font-weight: 300;
   color: #828282;
+
+  svg {
+    width: 25px;
+    height: auto;
+    margin-right: 30px;
+  }
+`;
+
+const Cloudy = styled(CloudyIcon)`
+  flex-basis: 30%;
+`;
+
+const Redo = styled(RedoIcon)`
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  cursor: pointer;
 `;
 
 const WeatherApp = () => {
@@ -77,9 +107,17 @@ const WeatherApp = () => {
           <Temperature>
             23 <Celsius>°C</Celsius>
           </Temperature>
+          <Cloudy />
         </CurrentWeather>
-        <AirFlow>23 m/h</AirFlow>
-        <Rain>48%</Rain>
+        <AirFlow>
+          <AirFlowIcon />
+          23 m/h
+        </AirFlow>
+        <Rain>
+          <RainIcon />
+          48%
+        </Rain>
+        <Redo />
       </WeatherCard>
     </Container>
   );
