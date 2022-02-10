@@ -122,6 +122,57 @@ const rejectButton = styled.button`
 `;
 ```
 
+##### day16 : 使用 API 抓取資料
+
+1. 如果物件包很多層, 而想拿到包再裡面的 `key,value` 可以使用陣列的 `reduce` 方法搭配 `includes`
+
+```jsx
+// STEP 2：將風速（WDSD）、氣溫（TEMP）和濕度（HUMD）的資料取出
+const weatherElements = locationData.weatherElement.reduce(
+  (neededElements, item) => {
+    if (
+      ['WDSD', 'TEMP', 'HUMD'].includes(item.elementName)
+    ) {
+      neededElements[item.elementName] = item.elementValue;
+    }
+    return neededElements;
+  },
+  {}
+);
+```
+
+2. 每次 setSomething 時都是用新的資料覆蓋舊的
+   當我們使用物件時，如果有需要物件中的某個值時，不能只是在 setCurrentWeather 帶入想要變更的物件屬性，因為 setSomething 這種用法會完全傳入的值去覆蓋掉舊有的內容。
+
+   ```jsx
+   // ❌ 錯誤：不能只寫出要修改或添加的物件屬性
+   setCurrentWeather({
+     temperature: 31,
+   });
+
+   console.log(currentWeather); //{ temperature: 31}
+   ```
+
+   正確的做法應該要把舊的資料透過物件的解構賦值帶入新物件中，再去添加或修改想要變更的屬性，像是這樣：
+
+   ```jsx
+   // ✅ 正確：先透過解構賦值把舊資料帶入新物件中，再去添加或修改想要變更的資料
+   setCurrentWeather({
+     ...currentWeather,
+     temperature: 31,
+   });
+
+   console.log(currentWeather);
+   // {
+   // observationTime: '2019-10-02 22:10:00',
+   // locationName: '臺北市',
+   // description: '多雲時晴',
+   // temperature: 31,
+   // windSpeed: 0.3,
+   // humid: 0.88,
+   // }
+   ```
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -129,3 +180,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+```
+
+```
