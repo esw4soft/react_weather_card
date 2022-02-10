@@ -88,36 +88,80 @@ const Cloudy = styled(CloudyIcon)`
   flex-basis: 30%;
 `;
 
-const Redo = styled(RedoIcon)`
-  width: 15px;
-  height: 15px;
+const Redo = styled.div`
   position: absolute;
   right: 15px;
   bottom: 15px;
-  cursor: pointer;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: flex-end;
+  color: #828282;
+
+  svg {
+    margin-left: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
 `;
 
 const WeatherApp = () => {
   const [currentWeather, setCurrentWeather] = useState({
     observationTime: '2019-10-02 22:10:00',
-    locationName: '臺北市',
+    locationName: '臺北',
     description: '多雲時晴',
     temperature: 27.5,
     windSpeed: 0.3,
     humid: 0.88,
   });
+
+  const handleClick = () => {
+    fetch(
+      'https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-A6779088-0E1F-47AD-930E-5E5D5FAF10E2&locationName=臺北'
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log('data', data);
+
+        const locationData = data.records.location[0];
+
+        const weatherElements =
+          locationData.weatherElement.reduce(
+            (needElements, item) => {
+              if (
+                ['WDSD', 'TEMP', 'HUMD'].includes(
+                  item.elementName
+                )
+              ) {
+                needElements[item.elementName] =
+                  item.elementValue;
+              }
+
+              return needElements;
+            },
+            {}
+          );
+
+        const currentWeatherData = {
+          observationTime: locationData.time.obsTime,
+          locationName: locationData.locationName,
+          description: '多雲時晴',
+          temperature: weatherElements.TEMP,
+          windSpeed: weatherElements.WDSD,
+          humid: weatherElements.HUMD,
+        };
+
+        // 避免覆蓋 使用展開運算子
+        setCurrentWeather({
+          ...currentWeatherData,
+        });
+      });
+  };
   return (
     <Container>
       <WeatherCard>
         <Location>{currentWeather.locationName}</Location>
         <Description>
-          {new Intl.DateTimeFormat('zh-TW', {
-            hour: 'numeric',
-            ninute: 'numeric',
-          }).format(
-            new Date(currentWeather.observationTime)
-          )}
-          {''}
           {currentWeather.description}
         </Description>
         <CurrentWeather>
@@ -133,9 +177,18 @@ const WeatherApp = () => {
         </AirFlow>
         <Rain>
           <RainIcon />
-          {currentWeather.humid * 100}%
+          {Math.round(currentWeather.humid * 100)} %
         </Rain>
-        <Redo />
+        <Redo onClick={handleClick}>
+          最後觀測時間 :
+          {new Intl.DateTimeFormat('zh-TW', {
+            hour: 'numeric',
+            ninute: 'numeric',
+          }).format(
+            new Date(currentWeather.observationTime)
+          )}{' '}
+          <RedoIcon />
+        </Redo>
       </WeatherCard>
     </Container>
   );
