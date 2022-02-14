@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -106,6 +106,12 @@ const Redo = styled.div`
 `;
 
 const WeatherApp = () => {
+  console.log('--invok--e fc--');
+
+  useEffect(() => {
+    console.log('excute fc in effect');
+    handleClick();
+  }, []);
   const [currentWeather, setCurrentWeather] = useState({
     observationTime: '2019-10-02 22:10:00',
     locationName: '臺北',
@@ -159,6 +165,7 @@ const WeatherApp = () => {
   };
   return (
     <Container>
+      {console.log('render')}
       <WeatherCard>
         <Location>{currentWeather.locationName}</Location>
         <Description>
