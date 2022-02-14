@@ -173,6 +173,8 @@ const weatherElements = locationData.weatherElement.reduce(
    // }
    ```
 
+   ##### day17 : useEffect 基本介紹
+
 ### `npm start`
 
 Runs the app in the development mode.\
