@@ -193,6 +193,10 @@ const weatherElements = locationData.weatherElement.reduce(
     }))
    ```
 
+   ##### day19 : async function
+
+   改成抓取完兩個 API 的資料後再進 useState
+
 ### `npm start`
 
 Runs the app in the development mode.\

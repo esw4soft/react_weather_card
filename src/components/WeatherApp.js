@@ -106,13 +106,6 @@ const Redo = styled.div`
 `;
 
 const WeatherApp = () => {
-  console.log('--invok--e fc--');
-
-  useEffect(() => {
-    console.log('excute fc in effect');
-    fetchCurrentWeather();
-    fetchWeatherForecast();
-  }, []);
   const [weatherElement, setWeatherElement] = useState({
     observationTime: new Date(),
     locationName: '',
@@ -125,8 +118,26 @@ const WeatherApp = () => {
     comfortability: '',
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const [currentWeather, weatherForecast] =
+        await Promise.all([
+          fetchCurrentWeather(),
+          fetchWeatherForecast(),
+        ]);
+      // console.log('data', data);
+
+      setWeatherElement({
+        ...currentWeather,
+        ...weatherForecast,
+      });
+    };
+
+    fetchData();
+  }, []);
+
   const fetchWeatherForecast = () => {
-    fetch(
+    return fetch(
       'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-A6779088-0E1F-47AD-930E-5E5D5FAF10E2&locationName=臺北市'
     )
       .then((response) => response.json())
@@ -149,19 +160,18 @@ const WeatherApp = () => {
             {}
           );
 
-        setWeatherElement((prevState) => ({
-          ...prevState,
+        return {
           description: weatherElements.Wx.parameterName,
           weatherCode: weatherElements.Wx.parameterValue,
           rainPossibility:
             weatherElements.PoP.parameterName,
           comfortability: weatherElements.CI.parameterName,
-        }));
+        };
       });
   };
 
   const fetchCurrentWeather = () => {
-    fetch(
+    return fetch(
       'https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-A6779088-0E1F-47AD-930E-5E5D5FAF10E2&locationName=臺北'
     )
       .then((res) => res.json())
@@ -187,19 +197,13 @@ const WeatherApp = () => {
             {}
           );
 
-        const currentWeatherData = {
+        return {
           observationTime: locationData.time.obsTime,
           locationName: locationData.locationName,
           temperature: weatherElements.TEMP,
           windSpeed: weatherElements.WDSD,
           humid: weatherElements.HUMD,
         };
-
-        // 避免覆蓋 使用展開運算子
-        setWeatherElement((prevState) => ({
-          ...prevState,
-          ...currentWeatherData,
-        }));
       });
   };
   return (
