@@ -110,18 +110,57 @@ const WeatherApp = () => {
 
   useEffect(() => {
     console.log('excute fc in effect');
-    handleClick();
+    fetchCurrentWeather();
+    fetchWeatherForecast();
   }, []);
-  const [currentWeather, setCurrentWeather] = useState({
-    observationTime: '2019-10-02 22:10:00',
-    locationName: '臺北',
-    description: '多雲時晴',
-    temperature: 27.5,
-    windSpeed: 0.3,
-    humid: 0.88,
+  const [weatherElement, setWeatherElement] = useState({
+    observationTime: new Date(),
+    locationName: '',
+    description: '',
+    temperature: 0,
+    windSpeed: 0,
+    humid: 0,
+    weatherCode: 0,
+    rainPossibility: 0,
+    comfortability: '',
   });
 
-  const handleClick = () => {
+  const fetchWeatherForecast = () => {
+    fetch(
+      'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-A6779088-0E1F-47AD-930E-5E5D5FAF10E2&locationName=臺北市'
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const locationData = data.records.location[0];
+        const weatherElements =
+          locationData.weatherElement.reduce(
+            (neededElements, item) => {
+              if (
+                ['Wx', 'PoP', 'CI'].includes(
+                  item.elementName
+                )
+              ) {
+                neededElements[item.elementName] =
+                  item.time[0].parameter;
+              }
+              return neededElements;
+            },
+            {}
+          );
+
+        setWeatherElement((prevState) => ({
+          ...prevState,
+          description: weatherElements.Wx.parameterName,
+          weatherCode: weatherElements.Wx.parameterValue,
+          rainPossibility:
+            weatherElements.PoP.parameterName,
+          comfortability: weatherElements.CI.parameterName,
+        }));
+      });
+  };
+
+  const fetchCurrentWeather = () => {
     fetch(
       'https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-A6779088-0E1F-47AD-930E-5E5D5FAF10E2&locationName=臺北'
     )
@@ -151,48 +190,54 @@ const WeatherApp = () => {
         const currentWeatherData = {
           observationTime: locationData.time.obsTime,
           locationName: locationData.locationName,
-          description: '多雲時晴',
           temperature: weatherElements.TEMP,
           windSpeed: weatherElements.WDSD,
           humid: weatherElements.HUMD,
         };
 
         // 避免覆蓋 使用展開運算子
-        setCurrentWeather({
+        setWeatherElement((prevState) => ({
+          ...prevState,
           ...currentWeatherData,
-        });
+        }));
       });
   };
   return (
     <Container>
       {console.log('render')}
       <WeatherCard>
-        <Location>{currentWeather.locationName}</Location>
+        <Location>{weatherElement.locationName}</Location>
         <Description>
-          {currentWeather.description}
+          {weatherElement.description}
+          {weatherElement.comfortability}
         </Description>
         <CurrentWeather>
           <Temperature>
-            {Math.round(currentWeather.temperature)}
+            {Math.round(weatherElement.temperature)}
             <Celsius>°C</Celsius>
           </Temperature>
           <Cloudy />
         </CurrentWeather>
         <AirFlow>
           <AirFlowIcon />
-          {currentWeather.windSpeed} m/h
+          {weatherElement.windSpeed} m/h
         </AirFlow>
         <Rain>
           <RainIcon />
-          {Math.round(currentWeather.humid * 100)} %
+          {Math.round(weatherElement.rainPossibility)} %
         </Rain>
-        <Redo onClick={handleClick}>
+        <Redo
+          onClick={() => {
+            fetchCurrentWeather();
+            fetchWeatherForecast();
+          }}
+        >
           最後觀測時間 :
           {new Intl.DateTimeFormat('zh-TW', {
             hour: 'numeric',
             ninute: 'numeric',
           }).format(
-            new Date(currentWeather.observationTime)
+            new Date(weatherElement.observationTime)
           )}{' '}
           <RedoIcon />
         </Redo>
