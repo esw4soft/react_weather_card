@@ -175,6 +175,24 @@ const weatherElements = locationData.weatherElement.reduce(
 
    ##### day17 : useEffect 基本介紹
 
+   ##### day18 : useEffect + API + useState
+
+   如果使用多個 useEffect 對單一 useState 進行修改會有資料覆蓋問題 可以在 setState 中帶入函式 取得前一個資料來避免覆蓋
+
+   ```jsx
+    const [weatherElement, setWeatherElement] = useState(/* ... */)
+
+    // 在 setWeatherElement 中可以帶入函式
+    // 可以透過這個函式的參數取得前一次的資料狀態
+    setWeatherElement((prevState => {
+      // 記得要回傳新的資料狀態回去
+      return {
+        ...prevState            // 保留原有的資料狀態
+        rainPossibility: 0.1    // 添加或更新的資料
+      }
+    }))
+   ```
+
 ### `npm start`
 
 Runs the app in the development mode.\
