@@ -197,6 +197,15 @@ const weatherElements = locationData.weatherElement.reduce(
 
    改成抓取完兩個 API 的資料後再進 useState
 
+   ##### day20 : useCallback
+
+   如果某個函式不需要被覆用，那麼可以直接定義在 useEffect 中，但若該方法會需要被共用，則把該方法提到 useEffect 外面後，記得用 useCallback 進行處理後再放到 useEffect 的 dependencies 中  
+   dependencies 位置如果要放函式就必須使用 useCallback 避免無窮迴圈 原因是 Call by reference. 所以 useCallback 主要是用來避免 useEffect 內的函式不斷執行的 hook
+
+   使用情境:
+
+   1. 函式在 useEffect 外面 而在 useEffect 有呼叫此函式且 dependencies 是放入該函式時一定要使用
+
 ### `npm start`
 
 Runs the app in the development mode.\
