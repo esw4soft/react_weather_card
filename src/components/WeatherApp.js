@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -118,14 +122,13 @@ const WeatherApp = () => {
     comfortability: '',
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = useCallback(() => {
+    const fetchingData = async () => {
       const [currentWeather, weatherForecast] =
         await Promise.all([
           fetchCurrentWeather(),
           fetchWeatherForecast(),
         ]);
-      // console.log('data', data);
 
       setWeatherElement({
         ...currentWeather,
@@ -133,7 +136,7 @@ const WeatherApp = () => {
       });
     };
 
-    fetchData();
+    fetchingData();
   }, []);
 
   const fetchWeatherForecast = () => {
@@ -142,7 +145,7 @@ const WeatherApp = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         const locationData = data.records.location[0];
         const weatherElements =
           locationData.weatherElement.reduce(
@@ -206,6 +209,13 @@ const WeatherApp = () => {
         };
       });
   };
+
+  useEffect(() => {
+    console.log('execute function in useeffect');
+
+    fetchData();
+  }, [fetchData]);
+
   return (
     <Container>
       {console.log('render')}
@@ -230,12 +240,7 @@ const WeatherApp = () => {
           <RainIcon />
           {Math.round(weatherElement.rainPossibility)} %
         </Rain>
-        <Redo
-          onClick={() => {
-            fetchCurrentWeather();
-            fetchWeatherForecast();
-          }}
-        >
+        <Redo onClick={fetchData}>
           最後觀測時間 :
           {new Intl.DateTimeFormat('zh-TW', {
             hour: 'numeric',
