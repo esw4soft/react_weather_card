@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as DayThunderstorm } from '../img/day-thunderstorm.svg';
 import { ReactComponent as DayClear } from '../img/day-clear.svg';
@@ -61,27 +61,25 @@ const weatherIcons = {
   },
 };
 
+const weatherCode2Type = (weatherCode) => {
+    const [weatherType] =
+      Object.entries(weatherTypes).find(
+        ([weatherType, weatherCodes]) =>
+          weatherCodes.includes(Number(weatherCode))
+      ) || [];
+
+    return weatherType;
+  };
+
 const WeatherIcon = ({ currentWeatherCode, moment }) => {
   const [currentWeatherIcon, setCurrentWeatherIcon] =
-    useState('isClear');
+  useState('isClear');
+
+  const theWeatherIcon = useMemo(() => weatherCode2Type(currentWeatherCode),[currentWeatherCode])
 
   useEffect(() => {
-    const weatherCode2Type = (weatherCode) => {
-      const [weatherType] =
-        Object.entries(weatherTypes).find(
-          ([weatherType, weatherCodes]) =>
-            weatherCodes.includes(Number(weatherCode))
-        ) || [];
-
-      return weatherType;
-    };
-    const currentWeatherIcon = weatherCode2Type(
-      currentWeatherCode
-    );
-
-    // STEP 3：透過 `setCurrentWeatherIcon` 修改組件內的資料狀態
-    setCurrentWeatherIcon(currentWeatherIcon);
-  }, [currentWeatherCode]);
+    setCurrentWeatherIcon(theWeatherIcon);
+  }, [theWeatherIcon]);
 
   return (
     <IconContainer>
