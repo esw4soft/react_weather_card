@@ -206,6 +206,17 @@ const weatherElements = locationData.weatherElement.reduce(
 
    1. 函式在 useEffect 外面 而在 useEffect 有呼叫此函式且 dependencies 是放入該函式時一定要使用
 
+   ##### day21 : 天氣圖示轉換 & useMemo 使用
+
+   1. 天氣圖示轉換:
+
+      1. 因為內容多所以先分出 components 檔
+      2. 定義天氣代碼對應到的圖示
+      3. 建立根據天氣代碼找出對應天氣型態的函式
+      4. 將父層(WeatherApp)的資料傳入子層組件(weatherIcon)
+      5. 子層取得並使用資料(useState + useEffect)
+      6. useEffect 加入相依項 currentWeatherCode 才會做更新
+
 ### `npm start`
 
 Runs the app in the development mode.\
