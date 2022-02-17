@@ -173,155 +173,155 @@ const weatherElements = locationData.weatherElement.reduce(
    // }
    ```
 
-   #### day17 : useEffect 基本介紹
+#### day17 : useEffect 基本介紹
 
-   #### day18 : useEffect + API + useState
+#### day18 : useEffect + API + useState
 
-   如果使用多個 useEffect 對單一 useState 進行修改會有資料覆蓋問題 可以在 setState 中帶入函式 取得前一個資料來避免覆蓋
+如果使用多個 useEffect 對單一 useState 進行修改會有資料覆蓋問題 可以在 setState 中帶入函式 取得前一個資料來避免覆蓋
 
-   ```jsx
-    const [weatherElement, setWeatherElement] = useState(/* ... */)
+```jsx
+ const [weatherElement, setWeatherElement] = useState(/* ... */)
 
-    // 在 setWeatherElement 中可以帶入函式
-    // 可以透過這個函式的參數取得前一次的資料狀態
-    setWeatherElement((prevState => {
-      // 記得要回傳新的資料狀態回去
-      return {
-        ...prevState            // 保留原有的資料狀態
-        rainPossibility: 0.1    // 添加或更新的資料
-      }
-    }))
-   ```
+ // 在 setWeatherElement 中可以帶入函式
+ // 可以透過這個函式的參數取得前一次的資料狀態
+ setWeatherElement((prevState => {
+   // 記得要回傳新的資料狀態回去
+   return {
+     ...prevState            // 保留原有的資料狀態
+     rainPossibility: 0.1    // 添加或更新的資料
+   }
+ }))
+```
 
-   #### day19 : async function
+#### day19 : async function
 
-   改成抓取完兩個 API 的資料後再進 useState
+改成抓取完兩個 API 的資料後再進 useState
 
-   #### day20 : useCallback
+#### day20 : useCallback
 
-   如果某個函式不需要被覆用，那麼可以直接定義在 useEffect 中，但若該方法會需要被共用，則把該方法提到 useEffect 外面後，記得用 useCallback 進行處理後再放到 useEffect 的 dependencies 中  
-   dependencies 位置如果要放函式就必須使用 useCallback 避免無窮迴圈 原因是 Call by reference. 所以 useCallback 主要是用來避免 useEffect 內的函式不斷執行的 hook
+如果某個函式不需要被覆用，那麼可以直接定義在 useEffect 中，但若該方法會需要被共用，則把該方法提到 useEffect 外面後，記得用 useCallback 進行處理後再放到 useEffect 的 dependencies 中  
+ dependencies 位置如果要放函式就必須使用 useCallback 避免無窮迴圈 原因是 Call by reference. 所以 useCallback 主要是用來避免 useEffect 內的函式不斷執行的 hook
 
-   使用情境:
+使用情境:
 
-   1. 函式在 useEffect 外面 而在 useEffect 有呼叫此函式且 dependencies 是放入該函式時一定要使用
+1.  函式在 useEffect 外面 而在 useEffect 有呼叫此函式且 dependencies 是放入該函式時一定要使用
 
-   ```jsx
-   // STEP 1：從 react 中載入 useCallback
-   import React, {
-     useState,
-     useEffect,
-     useCallback,
-   } from 'react';
+```jsx
+// STEP 1：從 react 中載入 useCallback
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 
-   // ...
-   // 定義 fetchCurrentWeather ...
-   // 定義 fetchWeatherForecast ...
+// ...
+// 定義 fetchCurrentWeather ...
+// 定義 fetchWeatherForecast ...
 
-   const WeatherApp = () => {
-     console.log('--- invoke function component ---');
-     const [weatherElement, setWeatherElement] = useState({
-       /* ... */
-     });
+const WeatherApp = () => {
+  console.log('--- invoke function component ---');
+  const [weatherElement, setWeatherElement] = useState({
+    /* ... */
+  });
 
-     // STEP 2：使用 useCallback 並將回傳的函式取名為 fetchData
-     const fetchData = useCallback(() => {
-       // STEP 3：把原本的 fetchData 改名為 fetchingData 放到 useCallback 的函式內
-       const fetchingData = async () => {
-         const [currentWeather, weatherForecast] =
-           await Promise.all([
-             fetchCurrentWeather(),
-             fetchWeatherForecast(),
-           ]);
+  // STEP 2：使用 useCallback 並將回傳的函式取名為 fetchData
+  const fetchData = useCallback(() => {
+    // STEP 3：把原本的 fetchData 改名為 fetchingData 放到 useCallback 的函式內
+    const fetchingData = async () => {
+      const [currentWeather, weatherForecast] =
+        await Promise.all([
+          fetchCurrentWeather(),
+          fetchWeatherForecast(),
+        ]);
 
-         setWeatherElement({
-           ...currentWeather,
-           ...weatherForecast,
-         });
-       };
+      setWeatherElement({
+        ...currentWeather,
+        ...weatherForecast,
+      });
+    };
 
-       // STEP 4：記得要呼叫 fetchingData 這個方法
-       fetchingData();
-       // STEP 5：因為 fetchingData 沒有相依到 React 組件中的資料狀態，所以 dependencies 陣列中不帶入元素
-     }, []);
+    // STEP 4：記得要呼叫 fetchingData 這個方法
+    fetchingData();
+    // STEP 5：因為 fetchingData 沒有相依到 React 組件中的資料狀態，所以 dependencies 陣列中不帶入元素
+  }, []);
 
-     useEffect(() => {
-       console.log('execute function in useEffect');
+  useEffect(() => {
+    console.log('execute function in useEffect');
 
-       fetchData();
+    fetchData();
 
-       // STEP 6：把透過 useCallback 回傳的函式放到 useEffect 的 dependencies 中
-     }, [fetchData]);
+    // STEP 6：把透過 useCallback 回傳的函式放到 useEffect 的 dependencies 中
+  }, [fetchData]);
 
-     return {
-       /* ... */
-     };
-   };
+  return {
+    /* ... */
+  };
+};
 
-   export default WeatherApp;
-   ```
+export default WeatherApp;
+```
 
-   #### day21 : 天氣圖示轉換 & useMemo 使用
+#### day21 : 天氣圖示轉換 & useMemo 使用
 
-   1. 天氣圖示轉換:
+1.  天氣圖示轉換:
 
-      1. 因為內容多所以先分出 components 檔
-      2. 定義天氣代碼對應到的圖示
-      3. 建立根據天氣代碼找出對應天氣型態的函式
-      4. 將父層(WeatherApp)的資料傳入子層組件(weatherIcon)
-      5. 子層取得並使用資料(useState + useEffect)
-      6. useEffect 加入相依項 currentWeatherCode 才會做更新
+    1. 因為內容多所以先分出 components 檔
+    2. 定義天氣代碼對應到的圖示
+    3. 建立根據天氣代碼找出對應天氣型態的函式
+    4. 將父層(WeatherApp)的資料傳入子層組件(weatherIcon)
+    5. 子層取得並使用資料(useState + useEffect)
+    6. useEffect 加入相依項 currentWeatherCode 才會做更新
 
-   2. useMemo 使用:
+2.  useMemo 使用:
 
-      1. 可以把某個運算結果保存下來，只要 dependencies 的值沒有改變，useMemo 就會直接使用上一次計算過的結果而不會重新在運算一次。
-      2. 此 hook 主要應用在複雜運算時,用來優化效能時使用,也代表不一定要使用 要看整體效能去做調整
-      3. 關於 useMemo 的使用有一點需要留意的是， useMemo 會在組件渲染時（rendering）被呼叫，因此不應該在這個時間點進行任何會有副作用（side effect）的操作；若需要有副作用的操作，則應該使用的是 useEffect 而不是 useMemo。
+    1. 可以把某個運算結果保存下來，只要 dependencies 的值沒有改變，useMemo 就會直接使用上一次計算過的結果而不會重新在運算一次。
+    2. 此 hook 主要應用在複雜運算時,用來優化效能時使用,也代表不一定要使用 要看整體效能去做調整
+    3. 關於 useMemo 的使用有一點需要留意的是， useMemo 會在組件渲染時（rendering）被呼叫，因此不應該在這個時間點進行任何會有副作用（side effect）的操作；若需要有副作用的操作，則應該使用的是 useEffect 而不是 useMemo。
 
-      ```jsx
-      // STEP 1：載入 useMemo
-      import React, {
-        useState,
-        useEffect,
-        useMemo,
-      } from 'react';
-      // ...
+    ```jsx
+    // STEP 1：載入 useMemo
+    import React, {
+      useState,
+      useEffect,
+      useMemo,
+    } from 'react';
+    // ...
 
-      // STEP 2：把 weatherCode2Type 函式搬到組件外
-      const weatherCode2Type = (weatherCode) => {
-        const [weatherType] =
-          Object.entries(weatherTypes).find(
-            ([weatherType, weatherCodes]) =>
-              weatherCodes.includes(Number(weatherCode))
-          ) || [];
+    // STEP 2：把 weatherCode2Type 函式搬到組件外
+    const weatherCode2Type = (weatherCode) => {
+      const [weatherType] =
+        Object.entries(weatherTypes).find(
+          ([weatherType, weatherCodes]) =>
+            weatherCodes.includes(Number(weatherCode))
+        ) || [];
 
-        return weatherType;
-      };
+      return weatherType;
+    };
 
-      const WeatherIcon = ({
-        currentWeatherCode,
-        moment,
-      }) => {
-        const [currentWeatherIcon, setCurrentWeatherIcon] =
-          useState('isClear');
+    const WeatherIcon = ({
+      currentWeatherCode,
+      moment,
+    }) => {
+      const [currentWeatherIcon, setCurrentWeatherIcon] =
+        useState('isClear');
 
-        // STEP 3：透過 useMemo 保存計算結果，記得要在 dependencies 中放入 currentWeatherCode
-        const theWeatherIcon = useMemo(
-          () => weatherCode2Type(currentWeatherCode),
-          [currentWeatherCode]
-        );
+      // STEP 3：透過 useMemo 保存計算結果，記得要在 dependencies 中放入 currentWeatherCode
+      const theWeatherIcon = useMemo(
+        () => weatherCode2Type(currentWeatherCode),
+        [currentWeatherCode]
+      );
 
-        // STEP 4：在 useEffect 中去改變 currentWeatherIcon，記得定義 dependencies
-        useEffect(() => {
-          setCurrentWeatherIcon(theWeatherIcon);
-        }, [theWeatherIcon]);
+      // STEP 4：在 useEffect 中去改變 currentWeatherIcon，記得定義 dependencies
+      useEffect(() => {
+        setCurrentWeatherIcon(theWeatherIcon);
+      }, [theWeatherIcon]);
 
-        return (
-          <IconContainer>
-            {weatherIcons[moment][currentWeatherIcon]}
-          </IconContainer>
-        );
-      };
+      return (
+        <IconContainer>
+          {weatherIcons[moment][currentWeatherIcon]}
+        </IconContainer>
+      );
+    };
 
-      export default WeatherIcon;
-      ```
+    export default WeatherIcon;
+    ```
