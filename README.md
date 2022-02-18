@@ -325,3 +325,9 @@ export default WeatherApp;
 
     export default WeatherIcon;
     ```
+
+#### day22: 根據時間顯示不同天氣圖示
+
+1. 抓回來的 json 十分複雜 所以經過整理產生新的 json 的函式另外寫
+2. 整理後的 json 再拿現在時間跟日出日落做判斷來切換圖示
+3. 複雜函式可用 useMemo 來處理優化效能
