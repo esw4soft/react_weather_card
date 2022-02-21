@@ -331,3 +331,34 @@ export default WeatherApp;
 1. 抓回來的 json 十分複雜 所以經過整理產生新的 json 的函式另外寫
 2. 整理後的 json 再拿現在時間跟日出日落做判斷來切換圖示
 3. 複雜函式可用 useMemo 來處理優化效能
+
+#### day23: 資料載入中的提示狀態
+
+1. 使用`isLoading: true || false` 來判斷載入狀態, 要注意直接改變 setWeatherElement 會覆蓋之前的資料, 需搭配使用
+
+```jsx
+// 在 setState 中如果是帶入函式的話，可以取得前一次的資料狀態
+setState((prevState) => {
+  // Object.assign would also work
+  return { ...prevState, ...updatedValues };
+});
+```
+
+2. 變換載入圖示(三元判斷式) 和旋轉 CSS(三元判斷式+傳入 props)
+3. 整理程式碼: 使用物件的解構賦值將會用的資料從 state 取出
+
+```jsx
+const {
+  observationTime,
+  locationName,
+  temperature,
+  windSpeed,
+  description,
+  weatherCode,
+  rainPossibility,
+  comfortability,
+  isLoading,
+} = weatherElement;
+
+// observationTime 就會等於 weatherElement.observationTime
+```
