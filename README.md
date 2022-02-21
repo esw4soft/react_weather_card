@@ -362,3 +362,7 @@ const {
 
 // observationTime 就會等於 weatherElement.observationTime
 ```
+
+#### day24: 跟隨現在時間切換深淺色主題
+
+使用 emotion 裡的 ThemeProvider,在套用到每個 CSS in JS
