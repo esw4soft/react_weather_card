@@ -62,20 +62,23 @@ const weatherIcons = {
 };
 
 const weatherCode2Type = (weatherCode) => {
-    const [weatherType] =
-      Object.entries(weatherTypes).find(
-        ([weatherType, weatherCodes]) =>
-          weatherCodes.includes(Number(weatherCode))
-      ) || [];
+  const [weatherType] =
+    Object.entries(weatherTypes).find(
+      ([weatherType, weatherCodes]) =>
+        weatherCodes.includes(Number(weatherCode))
+    ) || [];
 
-    return weatherType;
-  };
+  return weatherType;
+};
 
 const WeatherIcon = ({ currentWeatherCode, moment }) => {
   const [currentWeatherIcon, setCurrentWeatherIcon] =
-  useState('isClear');
+    useState('isClear');
 
-  const theWeatherIcon = useMemo(() => weatherCode2Type(currentWeatherCode),[currentWeatherCode])
+  const theWeatherIcon = useMemo(
+    () => weatherCode2Type(currentWeatherCode),
+    [currentWeatherCode]
+  );
 
   useEffect(() => {
     setCurrentWeatherIcon(theWeatherIcon);
