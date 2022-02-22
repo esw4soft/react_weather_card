@@ -5,6 +5,7 @@ import { ThemeProvider } from '@emotion/react';
 import useWeatherApi from './useWeatherApi';
 import WeatherCard from './WeatherCard';
 import sunriseAndSunsetData from './sunrise-sunset2.json';
+import WeatherSetting from './WeatherSetting';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.backgroundColor};
@@ -86,6 +87,9 @@ const WeatherApp = () => {
   const { locationName, isLoading } = weatherElement;
   const [currentTheme, setCurrentTheme] = useState('light');
 
+  const [currentPage, setCurrentPage] =
+    useState('WeatherCard');
+
   const moment = useMemo(
     () => getMoment(locationName),
     [locationName]
@@ -99,11 +103,17 @@ const WeatherApp = () => {
     <ThemeProvider theme={theme[currentTheme]}>
       <Container>
         {console.log('render, isloading: ', isLoading)}
-        <WeatherCard
-          weatherElement={weatherElement}
-          moment={moment}
-          fetchData={fetchData}
-        />
+        {currentPage === 'WeatherCard' && (
+          <WeatherCard
+            weatherElement={weatherElement}
+            moment={moment}
+            fetchData={fetchData}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+        {currentPage === 'WeatherSetting' && (
+          <WeatherSetting setCurrentPage={setCurrentPage} />
+        )}
       </Container>
     </ThemeProvider>
   );
