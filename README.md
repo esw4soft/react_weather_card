@@ -8,16 +8,16 @@ based on PJCHENder's article & published book : 從 Hooks 開始，讓你的網�
 
 如果有跳過的天數代表是比較簡單的部分或是已經比較熟的部分 就不會特別 commit\
 
-#### day5 : 可以使用變數`{Container}`或是 React 組件`<Container2 />`呈現 HTML \
+### day5 : 可以使用變數`{Container}`或是 React 組件`<Container2 />`呈現 HTML \
 
-#### day6 : React 畫面的重新渲染必須符合兩個條件 :
+### day6 : React 畫面的重新渲染必須符合兩個條件 :
 
 1.  `setCount` 被呼叫到
 2.  `count` 的值確實有改變
 
-#### day7 : 隱藏元素可以在 style 裡面 或是 className 裡面 又或是整個 dom 結構裡面 加入判斷來呈現與否
+### day7 : 隱藏元素可以在 style 裡面 或是 className 裡面 又或是整個 dom 結構裡面 加入判斷來呈現與否
 
-#### day8 : 因為 for 迴圈沒有回傳直所以無法應用在{}JSX 裡面 但可使用 map 搭配 array.from()或是 array.keys()來進行迴圈操作 :
+### day8 : 因為 for 迴圈沒有回傳直所以無法應用在{}JSX 裡面 但可使用 map 搭配 array.from()或是 array.keys()來進行迴圈操作 :
 
 ```jsx
 // [0, 1, 2, ..., 8, 9]
@@ -30,20 +30,20 @@ let counters =
 }
 ```
 
-#### day9 : change html to JSX
+### day9 : change html to JSX
 
-#### day10 : 將 JSX 拆成多個組件
+### day10 : 將 JSX 拆成多個組件
 
-#### day11 : 千萬不能在條件式（conditions）、迴圈（loops）或嵌套函式（nested functions）中呼叫 Hook 方法
+### day11 : 千萬不能在條件式（conditions）、迴圈（loops）或嵌套函式（nested functions）中呼叫 Hook 方法
 
 因 React 組件（例如，`<Counter />`）每次在渲染或更新畫面時，都會呼叫產生這個組件的函式（`Counter()`），而在 React Hooks 中會去記錄這些 Hooks 在函式中被呼叫的順序，以確保資料能夠被相互對應，但若當我們將 Hooks 放到條件式或迴圈時，就會破壞了這些 Hooks 被呼叫到的順序，如此會造成錯誤。
 
-#### day12 : React 開發者工具 React Developer Tools
+### day12 : React 開發者工具 React Developer Tools
 
 1. `Components` React 組件
 2. `Profilers` 效能檢視
 
-#### day14 : Weather Card -- CSS in JS
+### day14 : Weather Card -- CSS in JS
 
 解決不小心命名了同樣的 class 名稱，導致樣式相互影響或彼此覆蓋，又或者發生某些樣式權重不夠的情況而難以調整 的狀況
 
@@ -67,7 +67,7 @@ const Container = styled.div`
 // STEP 3：把上面定義好的 styled-component 當成組件使用
 ```
 
-#### day15 : emotion 更多用法
+### day15 : emotion 更多用法
 
 ```jsx
 // 一. 使用Emotion 調整已存在的Components
@@ -122,7 +122,7 @@ const rejectButton = styled.button`
 `;
 ```
 
-#### day16 : 使用 API 抓取資料
+### day16 : 使用 API 抓取資料
 
 1. 如果物件包很多層, 而想拿到包再裡面的 `key,value` 可以使用陣列的 `reduce` 方法搭配 `includes`
 
@@ -173,9 +173,9 @@ const weatherElements = locationData.weatherElement.reduce(
    // }
    ```
 
-#### day17 : useEffect 基本介紹
+### day17 : useEffect 基本介紹
 
-#### day18 : useEffect + API + useState
+### day18 : useEffect + API + useState
 
 如果使用多個 useEffect 對單一 useState 進行修改會有資料覆蓋問題 可以在 setState 中帶入函式 取得前一個資料來避免覆蓋
 
@@ -193,11 +193,11 @@ const weatherElements = locationData.weatherElement.reduce(
  }))
 ```
 
-#### day19 : async function
+### day19 : async function
 
 改成抓取完兩個 API 的資料後再進 useState
 
-#### day20 : useCallback
+### day20 : useCallback
 
 如果某個函式不需要被覆用，那麼可以直接定義在 useEffect 中，但若該方法會需要被共用，則把該方法提到 useEffect 外面後，記得用 useCallback 進行處理後再放到 useEffect 的 dependencies 中  
  dependencies 位置如果要放函式就必須使用 useCallback 避免無窮迴圈 原因是 Call by reference. 所以 useCallback 主要是用來避免 useEffect 內的函式不斷執行的 hook
@@ -261,7 +261,7 @@ const WeatherApp = () => {
 export default WeatherApp;
 ```
 
-#### day21 : 天氣圖示轉換 & useMemo 使用
+### day21 : 天氣圖示轉換 & useMemo 使用
 
 1.  天氣圖示轉換:
 
@@ -326,13 +326,13 @@ export default WeatherApp;
     export default WeatherIcon;
     ```
 
-#### day22: 根據時間顯示不同天氣圖示
+### day22: 根據時間顯示不同天氣圖示
 
 1. 抓回來的 json 十分複雜 所以經過整理產生新的 json 的函式另外寫
 2. 整理後的 json 再拿現在時間跟日出日落做判斷來切換圖示
 3. 複雜函式可用 useMemo 來處理優化效能
 
-#### day23: 資料載入中的提示狀態
+### day23: 資料載入中的提示狀態
 
 1. 使用`isLoading: true || false` 來判斷載入狀態, 要注意直接改變 setWeatherElement 會覆蓋之前的資料, 需搭配使用
 
@@ -363,21 +363,45 @@ const {
 // observationTime 就會等於 weatherElement.observationTime
 ```
 
-#### day24: 跟隨現在時間切換深淺色主題
+### day24: 跟隨現在時間切換深淺色主題
 
 使用 emotion 裡的 ThemeProvider,在套用到每個 CSS in JS
 
-#### day25: 重構程式碼 & 建立 Custom Hook
+### day25: 重構程式碼 & 建立 Custom Hook
 
 Custom Hook 的概念
 和之前寫的 React Component 基本上是一樣的，都是 JavaScript 的函式，而且在 Custom Hook 中一樣可以使用 useState、useEffect 這些原本 React 就有提供的 Hooks，只是在 React Component 中最後你會回傳的是 JSX，而在 Hook 中最後回傳的是一些資料或改變資料的方法。此外在自訂的 Hook 中，會遵循 React Hooks 的慣例，因此會使用 use 開頭來為該函式命名。
 
 自訂的 Hook 一樣要遵守原本 React Hooks 的原則，像是 Hook 只能在 React 的 Functional Component 中使用（過去 React Component 除了函式之外，也可以用 class 建立）、Hook 不能放在回圈或 if 判斷式內的等等。
 
-#### day26 : 切換頁面 - 子層組件修改父層組件資料狀態
+### day26 : 切換頁面 - 子層組件修改父層組件資料狀態
 
 1. 標籤註記
    1. `<label htmlFor="location">` `for`會變`htmlFor`
    2. 使用 `<datalist>` 取代 `<select>`
 1. 頁面切換
    1. 使用條件渲染 + 子組件修改父組件的狀態 實現頁面切換功能
+
+### day27 : 表單處理 Controlled vs Uncontrolled(useRef)
+
+把表單資料交給 React 來處理的就稱作 Controlled Components，也就是受 React 控制的資料；相對地，如果不把表單資料交給 React，而是像過去一樣，選取到該表單元素後，才從該表單元素取出值的這種做法，就稱作 Uncontrolled Components，也就是不受 React 控制的資料。
+
+useRef 的基本用法
+
+```jsx
+const InputElement = () => {
+  // 1.建立useRef
+  const refContainer = useRef(initialValue);
+
+  // 3. 取值 變數.current.value
+  const locationName = refContainer.current.value;
+  console.log(locationName);
+
+  // 2. 設定ref
+  return <input ref={refContainer} />;
+};
+```
+
+使用 Uncontrolled Components 畫面會像用 Controlled Components 的流程一樣，但要特別留意的是：「當 input 欄位內的資料有變動時，並不像 Controlled Component 一樣會促發畫面重新渲染」，因此，若有重新渲染畫面的需求，建議還是使用 Controlled Component 來處理
+
+具體來說，useRef 除了可以搭配 ref 指稱到某一 HTML 元素來使用之外，當我們在 React 組件中想要定義一些「變數」，但當這些變數改變時，又不需要像 state 一樣會重新導致畫面渲染的話，就很適合使用 useRef。
