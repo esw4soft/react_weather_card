@@ -405,3 +405,7 @@ const InputElement = () => {
 使用 Uncontrolled Components 畫面會像用 Controlled Components 的流程一樣，但要特別留意的是：「當 input 欄位內的資料有變動時，並不像 Controlled Component 一樣會促發畫面重新渲染」，因此，若有重新渲染畫面的需求，建議還是使用 Controlled Component 來處理
 
 具體來說，useRef 除了可以搭配 ref 指稱到某一 HTML 元素來使用之外，當我們在 React 組件中想要定義一些「變數」，但當這些變數改變時，又不需要像 state 一樣會重新導致畫面渲染的話，就很適合使用 useRef。
+
+### day28 : 保存和更新使用主設定的地區 locatStorage 搭配 useEffect
+
+基本上就是傳遞資料到每個 components 當資料有改變時做 useEffect ,再搭配 locatStorage 把資料暫存在瀏覽器上
