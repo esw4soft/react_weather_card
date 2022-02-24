@@ -7,6 +7,8 @@ import WeatherCard from './WeatherCard';
 import sunriseAndSunsetData from './sunrise-sunset2.json';
 import WeatherSetting from './WeatherSetting';
 
+import { findLocation } from '../data/utils';
+
 const Container = styled.div`
   background-color: ${({ theme }) => theme.backgroundColor};
   height: 100%;
@@ -83,36 +85,50 @@ const getMoment = (locationName) => {
 };
 
 const WeatherApp = () => {
-  const [weatherElement, fetchData] = useWeatherApi();
+  const storageCity = localStorage.getItem('cityName');
+  const [currentCity, setCurrentCity] = useState(
+    storageCity || '臺北市'
+  );
+
+  const currentLocation = findLocation(currentCity) || {};
+  const [weatherElement, fetchData] =
+    useWeatherApi(currentLocation);
   const { locationName, isLoading } = weatherElement;
   const [currentTheme, setCurrentTheme] = useState('light');
 
   const [currentPage, setCurrentPage] =
     useState('WeatherCard');
 
-  const moment = useMemo(
-    () => getMoment(locationName),
-    [locationName]
-  );
+  const moment = useMemo(() => getMoment('臺北'), []);
 
   useEffect(() => {
     setCurrentTheme(moment === 'day' ? 'light' : 'dark');
   }, [moment]);
 
+  useEffect(() => {
+    localStorage.setItem('cityName', currentCity);
+  }, [currentCity]);
+
   return (
     <ThemeProvider theme={theme[currentTheme]}>
       <Container>
         {console.log('render, isloading: ', isLoading)}
+        {console.log(moment)}
         {currentPage === 'WeatherCard' && (
           <WeatherCard
             weatherElement={weatherElement}
             moment={moment}
             fetchData={fetchData}
             setCurrentPage={setCurrentPage}
+            cityName={currentLocation.cityName}
           />
         )}
         {currentPage === 'WeatherSetting' && (
-          <WeatherSetting setCurrentPage={setCurrentPage} />
+          <WeatherSetting
+            setCurrentPage={setCurrentPage}
+            cityName={currentLocation.cityName}
+            setCurrentCity={setCurrentCity}
+          />
         )}
       </Container>
     </ThemeProvider>
