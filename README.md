@@ -409,3 +409,9 @@ const InputElement = () => {
 ### day28 : 保存和更新使用主設定的地區 locatStorage 搭配 useEffect
 
 基本上就是傳遞資料到每個 components 當資料有改變時做 useEffect ,再搭配 locatStorage 把資料暫存在瀏覽器上
+
+### day30 : PWA 相關
+
+CRA 現在初始安裝下已經沒有提供 service worker 來做 PWA 如果要做 PWA 需要改另外的指令  
+`npx create-react-app my-app --template cra-template-pwa`  
+而不是 `"npx create-react-app my-app"`
